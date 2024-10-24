@@ -1,5 +1,7 @@
 # Geolocated Images
 
+Creating geolocated images in code using [EXIF](https://github.com/exif-js/exif-js) to extract the metadata.
+
 1. Enable Location Services for the Camera:
     - Go to Settings on your iPhone.
     - Scroll down and tap on Privacy.

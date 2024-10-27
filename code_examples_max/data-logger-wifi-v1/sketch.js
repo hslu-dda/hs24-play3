@@ -11,22 +11,23 @@ function setup() {
 
     // load the data
     d3.csv("./data/datalog_4151_9844.csv").then((csv) => {
-        console.log(csv);
-        // data = csv
+        console.log("data loaded", csv);
 
         // remove duplicate networks
         data = uniqueNetworks(csv);
 
         // get the min/max RSSI from a custom function
+        // you can also just look the values up in your csv
         minMaxRSSI = findMinMaxRSSI(data);
 
-        // Create a d3 scale to map rssi to circle diameter (min 10, max 50 as example)
+        // Create a d3 scale to map rssi to the angle of the line 
+        // (min 0 = points to the right, max 90 = points upwards)
         rssiScale = d3
             .scaleSqrt()
             .domain([minMaxRSSI.min, minMaxRSSI.max]) // Input: range of RSSI values
             .range([0, -90]); // Output: diameter range (e.g., 10px to 50px)
 
-        redraw();
+        drawNetworks();
     });
 
     projection = d3
@@ -36,7 +37,7 @@ function setup() {
         .translate([width / 2, height / 2]); // center the map
 }
 
-function draw() {
+function drawNetworks() {
     background(240);
 
     if (data.length) {
@@ -59,15 +60,6 @@ function draw() {
             strokeWeight(2);
             stroke(255, 0, 0);
             point(x, y);
-            // point()
-
-            // let diameter = rssiScale(network[" rssi"]); // Get the circle's diameter based on rssi
-            // console.log(diame5r)
-
-            // fill(0, 0, 255, 50);
-            // ellipse(x, y, diameter, diameter); // Draw the network
-            // fill(0, 0, 0);
-            // text(network[" ssid"], x + 10, y); // Add a label next to the point
         });
     }
 }

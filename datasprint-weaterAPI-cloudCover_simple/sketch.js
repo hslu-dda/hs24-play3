@@ -2,6 +2,7 @@
 // cloudCover = The fraction of the sky obscured by clouds when observed from a particular location
 
 let apiKey = "YOUR_API_KEY";
+let data_field = "cloudCover"
 let res = 4;
 
 // Hamburg
@@ -10,7 +11,7 @@ let longHamburg = 9.9937; // Longitude for Hamburg
 let hamburgCloudLevel = 90;
 
 // URL Lucerne
-let hamburgQuery = `https://api.tomorrow.io/v4/timelines?location=${latHamburg},${longHamburg}&fields=cloudCover&timesteps=current&units=metric&apikey=${apiKey}`;
+let hamburgQuery = `https://api.tomorrow.io/v4/timelines?location=${latHamburg},${longHamburg}&fields=${data_field}&timesteps=current&units=metric&apikey=${apiKey}`;
 
 function setup() {
     createCanvas(800, 800);

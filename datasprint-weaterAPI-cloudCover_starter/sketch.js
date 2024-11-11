@@ -1,17 +1,10 @@
-// Using the Tomorrow.io cloudCover API
-// cloudCover = The fraction of the sky obscured by clouds when observed from a particular location
-
-let apiKey = "YOUR_API_KEY";
+// Grid of dots resolution
 let res = 4;
 
 // Hamburg
 let latHamburg = 53.5511; // Latitude for Hamburg
 let longHamburg = 9.9937; // Longitude for Hamburg
-let hamburgCloudLevel = 90;
-
-// URL Hamburg
-// https://docs.tomorrow.io/reference/realtime-weather
-let hamburgQuery = `https://api.tomorrow.io/v4/weather/realtime?location=${latHamburg},${longHamburg}&apikey=${apiKey}`
+let hamburgCloudLevel = 90; // Some Cloud Level
 
 function setup() {
     createCanvas(800, 800);
@@ -19,31 +12,11 @@ function setup() {
     textFont("Andale Mono"); // https://developer.apple.com/fonts/system-fonts/?q=mono
 }
 
-function mousePressed(){
-  fetchCloudCover();
-}
-
-function fetchCloudCover() {
-    // fetch hamburg
-    d3.json(hamburgQuery)
-        .then((data) => {
-            console.log(data);
-
-            // Extract the cloud cover from API response
-            hamburgCloudLevel = data.data.values.cloudCover;
-            console.log("Current cloude level Hamburg: ", hamburgCloudLevel);
-
-        })
-        .catch((error) => {
-            console.error("Error fetching cloud cover data:", error);
-        });
-}
-
 function draw() {
     let noiseLevel = 255;
 
     // Draw Hamburg Clouds
-    let noiseScaleHam = map(hamburgCloudLevel, 0, 100, 0.0, 0.005);
+    let noiseScaleHam = 0.005;
 
     for (let y = 0; y < height; y += res) {
         // Iterate from left to right.
@@ -63,8 +36,6 @@ function draw() {
 
     // Legend
     noStroke();
-
-    // Hamburg
     fill(0);
     rect(6, 6, 220, 20);
     fill(255);

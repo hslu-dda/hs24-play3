@@ -1,5 +1,5 @@
-// images to be loaded
-let imageArray = [
+let geoImages = [];
+let imageFiles = [
     "IMG_2448.jpeg",
     "IMG_2449.jpeg",
     "IMG_2450.jpeg",
@@ -32,75 +32,79 @@ let imageArray = [
     "IMG_2477.jpeg",
 ];
 
-// array to hold image-object containing file name and long/lat
-let imageData = [];
+// Setup D3 projection
+let projection = d3.geoMercator()
+    .center([8.284194444444445, 47.069375])
+    .scale(10000000)
+    .translate([400, 400]);
 
-function setup() {
-    createCanvas(400, 400);
+async function setup() {
+    createCanvas(800, 800);
 
-    imageArray.forEach((filename) => {
-        // js image load function, p5 imageLoad strips metadata
-        imageLoader(filename);
-    });
+    for (let i = 0; i < imageFiles.length; i++) {
+        let path = './images/' + imageFiles[i];
+        let imageData = await loadImageWithExif(path);
+        geoImages[i] = imageData;
+    }
+
+    console.log("geoImages", geoImages);
+    noLoop();
 }
+
 
 function draw() {
-    if (imageArray.length == imageData.length) {
-        console.log(imageData);
-        noLoop();
+    background(220);
+
+    // Draw each image at its geographic position
+    for (let i = 0; i < geoImages.length; i++) {
+        let geoImg = geoImages[i];
+        // Convert geographic coordinates to screen position
+        let pos = projection([geoImg.longitude, geoImg.latitude]);
+
+        let x = pos[0];
+        let y = pos[1];
+
+        // scale the image
+        let sc = 0.2;
+        let w = geoImg.img.width * sc;
+        let h = geoImg.img.height * sc;
+
+        // Draw image centered at its position
+        image(geoImg.img,x, y,w,h);
     }
 }
 
-// Function to load an image from a URL
-function imageLoader(filename) {
-    let img = new Image();
-    img.crossOrigin = "Anonymous"; // Allow cross-origin resource sharing if necessary
-    // When image is loaded, extract metadata
-    img.onload = function () {
-        extractMetadata(img);
-    };
-    img.src = "./images/" + filename; // Load image from URL
-    img.filename = filename; // to add to object and maybe load later with p5 loadImage
-}
 
-// Extract EXIF metadata, including GPS coordinates
-function extractMetadata(img) {
-    EXIF.getData(img, function () {
-        let lat = EXIF.getTag(this, "GPSLatitude");
-        let lon = EXIF.getTag(this, "GPSLongitude");
+function loadImageWithExif(path) {
+    return new Promise((resolve, reject) => {
+        loadImage(path, (img) => {
+            let tempImg = document.createElement('img');
+            tempImg.src = path;
 
-        if (lat && lon) {
-            let latitude = convertDMSToDD(
-                lat[0],
-                lat[1],
-                lat[2],
-                EXIF.getTag(this, "GPSLatitudeRef")
-            );
-            let longitude = convertDMSToDD(
-                lon[0],
-                lon[1],
-                lon[2],
-                EXIF.getTag(this, "GPSLongitudeRef")
-            );
+            tempImg.onload = function () {
+                EXIF.getData(tempImg, function () {
+                    let lat = EXIF.getTag(this, "GPSLatitude");
+                    let long = EXIF.getTag(this, "GPSLongitude");
 
-            // construct costum image object && add to imageData array
-            const newImgObj = {
-                filename: img.filename,
-                latitude: latitude,
-                longitude: longitude,
+                    let latitude = lat ? convertDMSToDD(lat) : null;
+                    let longitude = long ? convertDMSToDD(long) : null;
+
+                    resolve({
+                        img: img,
+                        latitude: latitude,
+                        longitude: longitude,
+                        filename: path.split('/').pop()
+                    });
+                });
             };
-            imageData.push(newImgObj);
-        } else {
-            console.log("No GPS data found");
-        }
+
+            tempImg.onerror = () => reject(new Error('Failed to load image'));
+        });
     });
 }
 
-// Convert GPS coordinates from DMS to Decimal Degrees (DD)
-function convertDMSToDD(degrees, minutes, seconds, direction) {
-    let dd = degrees + minutes / 60 + seconds / 3600;
-    if (direction === "S" || direction === "W") {
-        dd = dd * -1;
-    }
-    return dd;
+// Helper function to convert GPS coordinates from DMS to decimal degrees
+function convertDMSToDD(dms) {
+    return dms[0] + dms[1] / 60 + dms[2] / 3600;
 }
+

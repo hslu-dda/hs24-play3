@@ -1,7 +1,7 @@
-// Using the Tomorrow.io cloudCover API
-// cloudCover = The fraction of the sky obscured by clouds when observed from a particular location
+// Using the OpenWeather API
+// https://openweathermap.org/api
 
-let apiKey = "YOUR_API_KEY";
+let apiKey = "4c305ff32147c1a28a34131b7e85f047";
 let res = 4;
 
 // Hamburg
@@ -10,8 +10,6 @@ let longHamburg = 9.9937; // Longitude for Hamburg
 let hamburgCloudLevel = 90;
 
 // URL Hamburg
-// https://docs.tomorrow.io/reference/realtime-weather
-// let hamburgQuery = `https://api.tomorrow.io/v4/weather/realtime?location=${latHamburg},${longHamburg}&apikey=${apiKey}`
 let hamburgQuery = `https://api.openweathermap.org/data/3.0/onecall?lat=${latHamburg}&lon=${longHamburg}&appid=${apiKey}`
 
 function setup() {
@@ -31,8 +29,8 @@ function fetchCloudCover() {
             console.log(data);
 
             // Extract the cloud cover from API response
-            hamburgCloudLevel = data.data.values.cloudCover;
-            console.log("Current cloude level Hamburg: ", hamburgCloudLevel);
+            // hamburgCloudLevel = data.data.values.cloudCover;
+            // console.log("Current cloude level Hamburg: ", hamburgCloudLevel);
 
         })
         .catch((error) => {

@@ -1,0 +1,55 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": { "name": "Hamburg Central Station" },
+        "geometry": { "type": "Point", "coordinates": [10.0059, 53.5528] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Elbphilharmonie" },
+        "geometry": { "type": "Point", "coordinates": [9.9841, 53.5413] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "St. Michael's Church" },
+        "geometry": { "type": "Point", "coordinates": [9.9794, 53.5507] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Reeperbahn" },
+        "geometry": { "type": "Point", "coordinates": [9.9594, 53.5497] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Planten un Blomen Park" },
+        "geometry": { "type": "Point", "coordinates": [9.9849, 53.5571] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Speicherstadt" },
+        "geometry": { "type": "Point", "coordinates": [9.9933, 53.5432] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Alster Lakes" },
+        "geometry": { "type": "Point", "coordinates": [10.0115, 53.5652] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "HafenCity University" },
+        "geometry": { "type": "Point", "coordinates": [10.0033, 53.5412] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Miniatur Wunderland" },
+        "geometry": { "type": "Point", "coordinates": [9.9882, 53.5436] }
+      },
+      {
+        "type": "Feature",
+        "properties": { "name": "Fish Market" },
+        "geometry": { "type": "Point", "coordinates": [9.9526, 53.5466] }
+      }
+    ]
+  }

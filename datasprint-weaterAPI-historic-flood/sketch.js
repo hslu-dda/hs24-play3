@@ -1,7 +1,7 @@
 // Using the OpenWeather API
 // https://openweathermap.org/api
 
-let apiKey = "4c305ff32147c1a28a34131b7e85f047";
+let apiKey = "YOUR_KEY";
 let res = 4;
 
 // Hamburg
